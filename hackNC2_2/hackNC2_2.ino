@@ -1,8 +1,13 @@
 
 //jeffhe
 //Hacknc1!
-// Pin 13 has an LED connected on most Arduino boards.
-// give it a name:
+// HackNC v2.1.2
+/*
+*@ author Yoonshik Hong, Jeffrey He, Andrew Liu, Craig Weiss
+* Andrew Liu - SendGrid API integration
+* Craig Weiss - Google Translate API integration
+* Jeffrey He - Hardware, Arduino programming
+*/
 
 int photo = A1;
 int red = 9;
@@ -37,7 +42,7 @@ void loop() {
     int sensorValue = analogRead(photo);
     //print out the value you read:
    Serial.println(sensorValue);
-  if (sensorValue < 400)
+  if (sensorValue < 400 || F > 76)
   { 
    digitalWrite(red, HIGH); //Wire has been tripped
    //Insert email
