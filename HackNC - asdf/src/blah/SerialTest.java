@@ -5,11 +5,15 @@ package blah;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+
 import java.util.Enumeration;
+
+import javax.swing.JOptionPane;
 
 public class SerialTest implements SerialPortEventListener {
 	SerialPort serialPort;
@@ -103,7 +107,7 @@ public class SerialTest implements SerialPortEventListener {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				String inputLine = input.readLine();
-				System.out.println(inputLine + "asdf");
+//				System.out.println(inputLine + "asdf");
 				
 				isTemp = false;
 				
@@ -131,7 +135,8 @@ public class SerialTest implements SerialPortEventListener {
 	static boolean occurances = false;
 	static boolean laserIsConnected = false;
 	//static int counter = 0;
-	static boolean fire = false;
+	static boolean yofo = false;
+	static long qwe = 0L;
 	
 	static void checkLaser(String inputLine) {
 		try{
@@ -144,11 +149,12 @@ public class SerialTest implements SerialPortEventListener {
 			}
 			if ((!laserIsConnected && !occurances)) {
 				occurances = true;
+				qwe = System.nanoTime();
 				//counter++;
 				doSendGridEmailStuffForLaser(); //send email!!! TODO
-				System.out.println("email sent!");
-				//System.out.println("jigga wants cheese" + laserIsConnected + occurances+counter);
-			} else if (laserIsConnected && occurances) {
+				//System.out.println("email sent!");
+				//System.out.println("jigga wants cheese" + laserIsConnected + occurances);
+			} else if (laserIsConnected && occurances && (System.nanoTime() - qwe > 5000000000L)) {
 				occurances = false;
 			}
 		} catch(Exception e) {
@@ -164,13 +170,11 @@ public class SerialTest implements SerialPortEventListener {
 		// change above as necessary
 		double x = Double.parseDouble(inputLine);
 		
-		if (x >= 76.0) {
-			fire = true;
-		} 
-		
-		if (fire) {
+		if (x >= 76.0 && !yofo) {
+			yofo = true;
 			doSendGridEmailStuffForFire();
 		} 
+		
 		
 	}
 	
@@ -178,17 +182,25 @@ public class SerialTest implements SerialPortEventListener {
 	 * Sends the emails. (burglar)
 	 */
 	static void doSendGridEmailStuffForLaser() {
-		Sample.main(null);
+		System.out.println("email sent!");
+		String[] asdf = new String[1];
+		asdf[0] = s;
+		Sample.main(asdf);
 	}
 	
 	/**
 	 * Sends the email for fire
 	 */
 	static void doSendGridEmailStuffForFire() {
-		Sample.main2();
+		String[] asdf = new String[1];
+		asdf[0] = s;
+		Sample.main2(asdf);
+		System.out.println("FIRE!@!@!@!@!@!@!@");
 	}
 
+	static String s;
 	public static void main(String[] args) throws Exception {
+		s = JOptionPane.showInputDialog("Enter your email!");
 		SerialTest main = new SerialTest();
 		main.initialize();
 		Thread t = new Thread() {
